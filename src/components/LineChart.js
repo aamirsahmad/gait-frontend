@@ -33,16 +33,20 @@ var options = {
                             }
                         }).then((res) => {
                             let point = res.data;
-                            dataset.data.push({
-                                x: Date.now(),
-                                y: point[0]
-                            });
+                            let xpoint = new Date(parseInt(point[1]))
+                            if(point && point[1] && point[0] && xpoint) {
+                                dataset.data.push({
+                                    x: xpoint,
+                                    y: point[0]
+                                });
+                            }
                         }).catch((error) => {
+                            console.log(error);
                             window.location.reload();
                         });
                     });
                 },
-                delay: 2000
+                delay: 4000
             }
         }]
     }
@@ -54,26 +58,16 @@ export default class LineChart extends React.Component {
         super(props);
         this.state = {
             data: {},
-            userID: this.props.userID
+            userID: this.props.userID,
         }
     }
 
     componentDidMount() {
         userID = this.state.userID;
     }
-
-    // streamUserData(userID) {
-    //     ws = new WebSocket('ws://localhost:8095/get_queue');
-    //     ws.onopen = function () {
-    //         console.log(userID);
-    //         ws.send(userID);
-    //     };
-    //     ws.onmessage = function (receivedData) {
-    //         let obj = JSON.parse(receivedData.data);
-    //         data.datasets[0].data.push(obj.xyz);
-    //         data.labels.push(obj.timestamp);
-    //     };
-    // }
+    componentWillUnmount() {
+        this.props.terminate()
+    }
 
     render() {
         return (

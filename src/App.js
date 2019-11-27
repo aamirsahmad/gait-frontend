@@ -59,7 +59,9 @@ class App extends React.Component {
     }
 
     render() {
+        console.log(this.state.currentUser)
         let context;
+        {/* <AppContext userID={this.state.currentUser}/> */}
         if (this.state.isConnected) {
             context = this.state.currentUser > 0 ? <AppContext userID={this.state.currentUser}/> :
                 <Text>Click on a user to get started.</Text>
