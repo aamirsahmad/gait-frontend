@@ -18,7 +18,7 @@ class UserInferenceButtons extends React.Component {
             method: "GET",
             url: "http://localhost:8095/get_inference",
             params: {
-                user_id: 5
+                user_id: this.state.userID
             }
         }).then((res) => {
             // console.log('response successful')
