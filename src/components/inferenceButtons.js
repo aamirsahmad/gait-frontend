@@ -24,13 +24,56 @@ class UserInferenceButtons extends React.Component {
             // console.log('response successful')
             // console.log(res)
             if (res.data && res.data.items) {
-                // let fakedata = [{ "confidency": 0.98, "inferred_user_id": 5, "actual_user_id": 1 }, 
-                // { "confidency": 0.2, "inferred_user_id": 1, "actual_user_id": 1 },
-                // { "confidency": 0.6, "inferred_user_id": 2, "actual_user_id": 1 },
-                // { "confidency": 0.4, "inferred_user_id": 3, "actual_user_id": 1 },
-                // { "confidency": 0, "inferred_user_id": 4, "actual_user_id": 1 }];
+                // let fakedata = {"items": [
+                //                 {
+                //                     "confidency": "0.2",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.3",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.123412412",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.6",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.8",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.8153",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.321",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.3213123",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 },
+                //                 {
+                //                     "confidency": "0.443412",
+                //                     "inferred_user_id": "3",
+                //                     "inferred_users_name": "Ege"
+                //                 }
+                //             ]
+                //         }
                 this.setState({ data: res.data.items });
-                // this.setState({ data: fakedata });
+                // this.setState({ data: fakedata.items });
             } else {
 
              }
@@ -51,8 +94,8 @@ class UserInferenceButtons extends React.Component {
             return <Button
                 key={`${user.inferred_user_id}`}
                 primary
-                color={confidency > 0.8 ? "green" : confidency > 0.6 ? "blue" : confidency > 0.3 ? "orange" : "red"}
-                label={`${confidency * 100}% user:${user.inferred_user_id}`}
+                color={confidency > 0.8 ? "#04FB0F" : confidency > 0.5 ? "#73DDF7" : confidency > 0.3 ? "#FB6104" : "#FF3232"}
+                label={`${(confidency * 100).toFixed(1)}% user:${user.inferred_users_name}`}
                 onClick={() => { }}
             />
         })
@@ -78,7 +121,7 @@ class UserInferenceButtons extends React.Component {
 
     render() {
         return (
-            <div>{this.state.data && this.state.data.length > 0 ? this.ButtonBoi(this.state.data) : this.emptyDataset()}</div>
+            <div>{ this.state.userID !== 0 && (this.state.data && this.state.data.length > 0 ? this.ButtonBoi(this.state.data) : this.emptyDataset()) }</div>
         )
     }
 }

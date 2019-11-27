@@ -42,6 +42,7 @@ class App extends React.Component {
                     tempUsers.push(each);
                 }
                 this.setState({users: tempUsers, isConnected: true, sidebar: true});
+                this.validateCurrentUser()
             }
 
             if (!this.state.isConnected) {
@@ -58,12 +59,17 @@ class App extends React.Component {
         this.setState({currentUser: name});
     }
 
+    validateCurrentUser() {
+        if(!this.state.users || !this.state.users.includes(this.state.currentUser)) {
+            this.setState({currentUser: 0})
+        }
+    }
+
     render() {
-        console.log(this.state.currentUser)
+        this.state.currentUser && this.validateCurrentUser()
         let context;
-        {/* <AppContext userID={this.state.currentUser}/> */}
         if (this.state.isConnected) {
-            context = this.state.currentUser > 0 ? <AppContext userID={this.state.currentUser}/> :
+            context = (this.state.currentUser && this.state.currentUser !== 0) ? <AppContext userID={this.state.currentUser}/> :
                 <Text>Click on a user to get started.</Text>
         } else {
             context =
