@@ -45,7 +45,9 @@ var config = {
                 borderColor: chartColors.blue,
                 fill: false,
                 cubicInterpolationMode: 'monotone',
-                data: []
+                data: [],
+                pointRadius: 0,
+                // borderWidth: 2,
             }
             ,]
     },
@@ -59,7 +61,7 @@ var config = {
                 type: 'realtime',
                 realtime: {
                     duration: 35000,
-                    refresh: 20,
+                    refresh: 30,
                     delay: 2000,
                     pause: false,
                     ttl: undefined,
