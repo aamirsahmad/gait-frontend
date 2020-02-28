@@ -4,7 +4,13 @@ import React, { Component } from 'react';
 
 import { Line } from 'react-chartjs-2';
 
+import * as zoom from 'chartjs-plugin-zoom';
+
+
 import 'chartjs-plugin-streaming';
+
+
+
 console.log(React.version);
 var g_data = []
 
@@ -21,8 +27,12 @@ var color = Chart.helpers.color;
 
 var userID = -1;
 var global_data_point = {}
+var theChart
 
-
+function pauseHandler(){
+	config.options.scales.xAxes[0].realtime.pause = !(config.options.scales.xAxes[0].realtime.pause);
+	theChart.update({duration: 0});
+}
 
 function onRefresh(chart) {
     // chart.data.datasets[0].data.push(global_data_point);
@@ -31,7 +41,7 @@ function onRefresh(chart) {
     g_data = [];
     // update chart datasets keeping the current animation
     chart.update({
-    preservation: true
+        preservation: true
     });
 }
 
@@ -40,7 +50,7 @@ var config = {
     data: {
         datasets: [
             {
-                label: 'Gait Plot',
+                label: 'Gait data',
                 backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
                 borderColor: chartColors.blue,
                 fill: false,
@@ -54,7 +64,7 @@ var config = {
     options: {
         title: {
             display: true,
-            text: 'Line chart (hotizontal scroll) sample'
+            text: '' // put heading here
         },
         scales: {
             xAxes: [{
@@ -87,20 +97,40 @@ var config = {
                 // }
             }]
         },
-        // tooltips: {
-        //     mode: 'nearest',
-        //     intersect: false
-        // },
-        // hover: {
-        //     mode: 'nearest',
-        //     intersect: false
-        // }
+        tooltips: {
+            mode: 'nearest',
+            intersect: false
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: false
+        },
+        pan: {
+            enabled: true,    // Enable panning
+            mode: 'x',        // Allow panning in the x direction
+            rangeMin: {
+                x: null       // Min value of the delay option
+            },
+            rangeMax: {
+                x: null       // Max value of the delay option
+            }
+        },
+        zoom: {
+            enabled: false,    // Enable zooming
+            mode: 'x',        // Allow zooming in the x direction
+            rangeMin: {
+                x: null       // Min value of the duration option
+            },
+            rangeMax: {
+                x: null       // Max value of the duration option
+            }
+        }
     },
     plugins: {
         streaming: {            // per-chart option
             frameRate: 60       // chart is drawn 30 times every second
         }
-    }
+    },
 }
 
 export default class LineChart extends React.Component {
@@ -117,7 +147,8 @@ export default class LineChart extends React.Component {
     componentDidMount() {
         userID = this.state.userID;
         const myChartRef = this.chartReference.current.getContext("2d");
-        new Chart(myChartRef, config);
+        theChart = new Chart(myChartRef, config);
+        Chart.plugins.register(zoom);
         this.streamUserData(this.state.userID);
     }
 
@@ -128,10 +159,14 @@ export default class LineChart extends React.Component {
 
     render() {
         return (
-            <canvas 
-                id="myChart"
-                ref={this.chartReference}
-            />
+            <div>
+                <canvas
+                    id="myChart"
+                    ref={this.chartReference}
+                />
+                <button onClick={() => pauseHandler()}>Play-Pause</button>
+            </div>
+
         )
     }
 
