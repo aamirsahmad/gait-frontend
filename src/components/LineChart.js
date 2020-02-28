@@ -9,6 +9,7 @@ import * as zoom from 'chartjs-plugin-zoom';
 
 import 'chartjs-plugin-streaming';
 
+import './LineChart.css';
 
 
 console.log(React.version);
@@ -28,11 +29,6 @@ var color = Chart.helpers.color;
 var userID = -1;
 var global_data_point = {}
 var theChart
-
-function pauseHandler(){
-	config.options.scales.xAxes[0].realtime.pause = !(config.options.scales.xAxes[0].realtime.pause);
-	theChart.update({duration: 0});
-}
 
 function onRefresh(chart) {
     // chart.data.datasets[0].data.push(global_data_point);
@@ -141,6 +137,7 @@ export default class LineChart extends React.Component {
         this.state = {
             data: {},
             userID: this.props.userID,
+            buttonText: "Pause"
         }
     }
 
@@ -157,14 +154,27 @@ export default class LineChart extends React.Component {
         this.props.terminate()
     }
 
+    pauseHandler = () => {
+        const { buttonText } = this.state //destucture state
+        if(buttonText == 'Play'){
+            this.setState({buttonText: "Pause"}); 
+        }
+        else{
+            this.setState({buttonText: "Play"}); 
+        }
+        config.options.scales.xAxes[0].realtime.pause = !(config.options.scales.xAxes[0].realtime.pause);
+        theChart.update({duration: 0});
+    } 
+
     render() {
+        const { buttonText } = this.state //destucture state
         return (
             <div>
                 <canvas
                     id="myChart"
                     ref={this.chartReference}
                 />
-                <button onClick={() => pauseHandler()}>Play-Pause</button>
+                <button class="pure-material-button-contained button-center" onClick={() => this.pauseHandler()}>{buttonText}</button>
             </div>
 
         )
