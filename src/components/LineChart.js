@@ -6,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 
 import 'chartjs-plugin-streaming';
 console.log(React.version);
+var g_data = []
 
 var chartColors = {
     red: 'rgb(255, 99, 132)',
@@ -25,6 +26,13 @@ var global_data_point = {}
 
 function onRefresh(chart) {
     // chart.data.datasets[0].data.push(global_data_point);
+    // append the new data array to the existing chart data
+    Array.prototype.push.apply(chart.data.datasets[0].data, g_data.slice());
+    g_data = [];
+    // update chart datasets keeping the current animation
+    chart.update({
+    preservation: true
+    });
 }
 
 var config = {
@@ -50,7 +58,7 @@ var config = {
             xAxes: [{
                 type: 'realtime',
                 realtime: {
-                    duration: 50000,
+                    duration: 35000,
                     refresh: 20,
                     delay: 2000,
                     pause: false,
@@ -133,7 +141,8 @@ export default class LineChart extends React.Component {
             let obj = JSON.parse(receivedData.data);
             console.log(obj.timestamp);
             global_data_point = { x: new Date(parseInt(obj.timestamp)), y: obj.xyz };
-            config.data.datasets[0].data.push(global_data_point);
+
+            g_data.push(global_data_point);
         };
     }
 
