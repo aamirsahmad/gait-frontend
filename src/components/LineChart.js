@@ -60,7 +60,7 @@ var config = {
             xAxes: [{
                 type: 'realtime',
                 realtime: {
-                    duration: 35000,
+                    duration: 30000,
                     refresh: 30,
                     delay: 2000,
                     pause: false,
@@ -68,7 +68,7 @@ var config = {
                     onRefresh: onRefresh
                 },
                 gridLines: {
-                    display: true,
+                    display: false,
                 },
                 display: 'true'
             }],
@@ -76,6 +76,9 @@ var config = {
                 scaleLabel: {
                     display: true,
                     labelString: 'value'
+                },
+                gridLines: {
+                    display: true,
                 },
                 // ticks: {
                 //     max: 30,
@@ -95,7 +98,7 @@ var config = {
     },
     plugins: {
         streaming: {            // per-chart option
-            frameRate: 30       // chart is drawn 30 times every second
+            frameRate: 60       // chart is drawn 30 times every second
         }
     }
 }
