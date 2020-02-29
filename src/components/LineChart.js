@@ -180,7 +180,6 @@ export default class LineChart extends React.Component {
         )
     }
 
-    // If this isn't the hackiest code I have ever written so far then I don't know what is. -- Ege
     streamUserData(userID) {
         let ws = this.ws;
         ws.onopen = function () {
