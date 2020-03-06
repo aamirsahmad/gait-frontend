@@ -112,7 +112,7 @@ var config = {
             }
         },
         zoom: {
-            enabled: false,    // Enable zooming
+            enabled: true,    // Enable zooming
             mode: 'x',        // Allow zooming in the x direction
             rangeMin: {
                 x: null       // Min value of the duration option
@@ -157,6 +157,7 @@ export default class LineChart extends React.Component {
     pauseHandler = () => {
         const { buttonText } = this.state //destucture state
         if(buttonText == 'Play'){
+            theChart.resetZoom();
             this.setState({buttonText: "Pause"}); 
         }
         else{
