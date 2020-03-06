@@ -102,7 +102,7 @@ var config = {
             intersect: false
         },
         pan: {
-            enabled: true,    // Enable panning
+            enabled: false,    // Enable panning
             mode: 'x',        // Allow panning in the x direction
             rangeMin: {
                 x: null       // Min value of the delay option
@@ -112,7 +112,7 @@ var config = {
             }
         },
         zoom: {
-            enabled: true,    // Enable zooming
+            enabled: false,    // Enable zooming
             mode: 'x',        // Allow zooming in the x direction
             rangeMin: {
                 x: null       // Min value of the duration option
@@ -158,10 +158,14 @@ export default class LineChart extends React.Component {
         const { buttonText } = this.state //destucture state
         if(buttonText == 'Play'){
             theChart.resetZoom();
+            config.options.zoom.enabled = false;
+            config.options.pan.enabled = false;
             this.setState({buttonText: "Pause"}); 
         }
         else{
             this.setState({buttonText: "Play"}); 
+            config.options.zoom.enabled = true;
+            config.options.pan.enabled = true;
         }
         config.options.scales.xAxes[0].realtime.pause = !(config.options.scales.xAxes[0].realtime.pause);
         theChart.update({duration: 0});
